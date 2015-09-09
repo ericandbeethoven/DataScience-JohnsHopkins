@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1440448234228.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4BE3F7F5",
+    "lastKnownWriteTime" : 139938624438271,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "f08kypcwq5",
+        "caption" : "amzn",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=amzn&cache_key=f08kypcwq5",
+        "displayedObservations" : 2175,
+        "environment" : "",
+        "object" : "amzn",
+        "totalObservations" : 2175,
+        "variables" : 6
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

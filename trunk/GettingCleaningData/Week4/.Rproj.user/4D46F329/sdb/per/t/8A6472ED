@@ -1,0 +1,18 @@
+{
+    "contents" : "# Question 1\n\n# download data\nfile.url <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv'\nfile.dest <- 'ACS4.csv'\ndownload.file(file.url, file.dest)\n\n# load the data\nACS <- read.csv(file.dest)\n\n# extract names\nnames <- names(ACS)\n\n# string split\nstrsplit(names, 'wgtp')[123]\n\n# Question 2\n# download data\nfile.url <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv'\nfile.dest <- 'GDP4.csv'\ndownload.file(file.url, file.dest, method='wget')\n\n# read the data\nGDP <- read.csv(file.dest, skip=4, nrows=190)\n\n# substitute comma's out\nGDPdol <- gsub(\",\", \"\", GDP$X.4)\n\n# convert to integer and calculate mean\nGDPdol <- as.integer(GDPdol)\nmean(GDPdol, na.rm=TRUE)\n\n# Question 3\n# attach the GDP data frame\nattach(GDP)\ngrep(\"^United\",GDP$V4)\n\n# Question 4\n\n# download data and load it\nfile.url <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv'\nfile.dest <- 'GDP4.csv'\ndownload.file(file.url, file.dest, method='wget')\nGDP <- read.csv(file.dest, skip=4, nrows=190)\nfile.url <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv'\nfile.dest <- 'edu.csv'\ndownload.file(file.url, file.dest, method='wget')\nedu <- read.csv(file.dest)\n\n# merge the datasets\nmerged <- merge(GDP, edu, by.x = 'X', by.y = 'CountryCode')\n\n# extract the information\nfy.june <- grep('Fiscal year end: June', merged$Special.Notes)\nlength(fy.june)\n\n# Question 5\nlibrary(quantmod)\namzn = getSymbols(\"AMZN\",auto.assign=FALSE)\nsampleTimes = index(amzn) \n\n\n# create logical for year 2012\nyear2012 <- grepl('2012-*', sampleTimes)\n\n# count 2012 observations (i.e. true)\ntable(year2012)\n\n# subset based on 2012\nsampleTimes2012 <- subset(sampleTimes, year2012)\n\n# convert to day of week\nday <- format(sampleTimes2012, '%A')\n\n# count each day\ntable(day)\n\n",
+    "created" : 1440447763418.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3879968721",
+    "id" : "8A6472ED",
+    "lastKnownWriteTime" : 1440448402,
+    "path" : "~/R/JohnsHopkins/GettingCleaningData/Week4/Quiz.R",
+    "project_path" : "Quiz.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,18 @@
+{
+    "contents" : "#########################################################\nlibrary(swirl)\ninstall_from_swirl(\"Exploratory Data Analysis\")\n#########################################################\n\n# Principles of Analytic Graphs \n",
+    "created" : 1441648405612.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2224673129",
+    "id" : "C39651E4",
+    "lastKnownWriteTime" : 1441648419,
+    "path" : "~/R/JohnsHopkins/ExploratoryDataAnalysis/Swirl/Swirl.R",
+    "project_path" : "Swirl.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

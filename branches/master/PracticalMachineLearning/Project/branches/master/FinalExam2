@@ -1,0 +1,148 @@
+# =======================================================================================
+# LOAD LIBRARIES
+# =======================================================================================
+# Following packages are required for analysis and presentation
+# install.packages("caret")
+library(caTools)
+library(caret)
+library(randomForest)
+library(gbm)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(lattice)
+library(rpart)
+library(rpart.plot)
+library(ROCR)
+library(tm)
+library(SnowballC)
+
+# =======================================================================================
+# LOAD DATA
+# =======================================================================================
+
+ebay = read.csv("ebay.csv", header=T, stringsAsFactors=F)
+pctsold = mean(ebay$sold)
+
+# =======================================================================================
+# Problem 1
+# =======================================================================================
+pctsold = mean(ebay$sold)
+
+# =======================================================================================
+# Problem 2 - 4
+# =======================================================================================
+summary(ebay)
+
+# =======================================================================================
+# Problem 5 - 6
+# =======================================================================================
+set.seed(144)
+spl = sample.split(ebay$sold, 0.7)
+training = subset(ebay, spl==TRUE)
+testing = subset(ebay, spl==FALSE)
+
+
+Modellm = lm(sold ~ biddable +
+             startprice +
+             condition +
+             heel +
+             style +
+             color +
+             material, 
+             data=training)
+
+summary(Modellm)
+
+# =======================================================================================
+# Problem 8
+# =======================================================================================
+1.026e-01/(8.847e-02)
+
+
+# =======================================================================================
+# Problem 9
+# =======================================================================================
+table(training$sold)
+predlm = predict(Modellm,newdata=testing,type="response")
+table(testing$sold,predlm>0.5)
+
+
+# =======================================================================================
+# Problem 10
+# =======================================================================================
+
+predROCR = prediction(predlm, testing$sold)
+
+# Compute AUC
+performance(predROCR, "auc")@y.values
+
+
+# =======================================================================================
+# Problem 15
+# =======================================================================================
+set.seed(144)
+spl = sample.split(ebay$sold, 0.7)
+training = subset(ebay, spl==TRUE)
+testing = subset(ebay, spl==FALSE)
+
+numFolds = trainControl( method = "cv", number = 10 )
+cpGrid = expand.grid( .cp = seq(0.001,0.05,0.001)) 
+
+# Perform the cross validation
+ebayCART = train(sold ~ 
+                  biddable +
+                  startprice +
+                  condition +
+                  heel +
+                  style +
+                  color +
+                  material,
+      data=training, 
+      method = "rpart", 
+      trControl = numFolds, 
+      tuneGrid = cpGrid )
+
+
+
+# =======================================================================================
+# Problem 16
+# =======================================================================================
+ebayCART = rpart(sold ~ 
+                   biddable +
+                   startprice +
+                   condition +
+                   heel +
+                   style +
+                   color +
+                   material,
+                 data=training, 
+                 cp = 0.005)
+
+prp(ebayCART)
+
+# =======================================================================================
+# Problem 17
+# =======================================================================================
+Corpusebay = Corpus(VectorSource(ebay$description))
+
+# You can go through all of the standard pre-processing steps like we did in Unit 5:
+Corpusebay = tm_map(Corpusebay, tolower)
+Corpusebay = tm_map(Corpusebay, PlainTextDocument)
+Corpusebay = tm_map(Corpusebay, removePunctuation)
+Corpusebay = tm_map(Corpusebay, removeWords, stopwords("english"))
+Corpusebay = tm_map(Corpusebay, stemDocument, lazy=T)
+
+# Now we are ready to convert our corpus to a DocumentTermMatrix, remove sparse terms, and turn it into a data frame. 
+# We selected one particular threshold to remove sparse terms, but remember that you can try different numbers!
+dtm = DocumentTermMatrix(Corpusebay)
+spdtm = removeSparseTerms(dtm, 0.9)
+ebayWords = as.data.frame(as.matrix(spdtm))
+
+description.freq = sapply(ebayWords, sum, na.rm=1)
+descrip.freq = data.frame(description.freq)
+descrip.freq = descrip.freq[order([-1] ) , ]
+
+# =======================================================================================
+# Problem 16
+# =======================================================================================
